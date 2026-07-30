@@ -1,5 +1,9 @@
 import express, { Application, Response } from 'express';
-import 'dotenv/config';
+import { pinoHttp } from 'pino-http';
+
+import logger from './utils/logger.js';
+import NotFoundRouteMiddleware from './middlewares/not-found.middleware.js';
+import ErrorMiddleware from './middlewares/error.middleware.js';
 
 class App {
     public app: Application;
@@ -7,16 +11,24 @@ class App {
     constructor() {
         this.app = express();
 
-        this.config();
-        this.routes();
+        this.initializeMiddleware();
+        this.initializeRoutes();
+        this.initializeErrorHandling();
     }
 
-    config() {
+    private initializeMiddleware() {
         this.app.use(express.json());
+        this.app.use(express.urlencoded({ extended: true }));
+        this.app.use(pinoHttp({ logger }));
     }
 
-    routes() {
-        this.app.get('/healthCheck', (_, res: Response) => {
+    private initializeErrorHandling() {
+        this.app.use(NotFoundRouteMiddleware);
+        this.app.use(ErrorMiddleware);
+    }
+
+    private initializeRoutes() {
+        this.app.get('/health-check', (_, res: Response) => {
             res.status(200).json({ message: 'API running well!' });
         });
     }

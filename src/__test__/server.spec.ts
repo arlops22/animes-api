@@ -6,9 +6,9 @@ describe('Server', () => {
     const app = new App().app;
 
     it('should run without error', async () => {
-        const response = await request(app).get('/healthCheck');
+        const { status, body } = await request(app).get('/health-check');
 
-        expect(response.status).toBe(200);
-        expect(response.body).toEqual({ message: 'API running well!' });
+        expect(status).toBe(200);
+        expect(body).toEqual({ message: 'API running well!' });
     });
 });
