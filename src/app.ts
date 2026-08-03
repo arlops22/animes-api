@@ -4,9 +4,11 @@ import { pinoHttp } from 'pino-http';
 import logger from './utils/logger.js';
 import NotFoundRouteMiddleware from './middlewares/not-found.middleware.js';
 import ErrorMiddleware from './middlewares/error.middleware.js';
+import V1Routes from './routes/v1/index.js';
 
 class App {
     public app: Application;
+    private v1Routes = new V1Routes();
 
     constructor() {
         this.app = express();
@@ -31,6 +33,8 @@ class App {
         this.app.get('/health-check', (_, res: Response) => {
             res.status(200).json({ message: 'API running well!' });
         });
+
+        this.app.use('/v1', this.v1Routes.router);
     }
 
     listen(port: string) {
