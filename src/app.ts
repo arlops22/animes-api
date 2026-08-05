@@ -2,9 +2,9 @@ import express, { Application, Response } from 'express';
 import { pinoHttp } from 'pino-http';
 
 import logger from './utils/logger.js';
-import NotFoundRouteMiddleware from './middlewares/not-found.middleware.js';
-import ErrorMiddleware from './middlewares/error.middleware.js';
 import V1Routes from './routes/v1/index.js';
+import notFoundRouteMiddleware from './middlewares/not-found.middleware.js';
+import errorMiddleware from './middlewares/error.middleware.js';
 
 class App {
     public app: Application;
@@ -25,8 +25,8 @@ class App {
     }
 
     private initializeErrorHandling() {
-        this.app.use(NotFoundRouteMiddleware);
-        this.app.use(ErrorMiddleware);
+        this.app.use(notFoundRouteMiddleware);
+        this.app.use(errorMiddleware);
     }
 
     private initializeRoutes() {
