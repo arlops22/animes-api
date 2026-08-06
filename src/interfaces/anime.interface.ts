@@ -8,13 +8,13 @@ export interface Anime {
     updatedAt: Date;
 }
 
-export interface AnimeCreate {
+export interface AnimeCreatePayload {
     name: string;
-    author: string | null;
-    summary: string | null;
+    author?: string | null;
+    summary?: string | null;
 }
 
 export interface AnimesRepository {
-    create(payload: AnimeCreate): Promise<Anime>;
+    create(payload: AnimeCreatePayload): Promise<Anime>;
     findAll(): Promise<Anime[]>;
 }

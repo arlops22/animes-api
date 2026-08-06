@@ -9,13 +9,13 @@ describe('Server', () => {
         const { status, body } = await request(app).get('/health-check');
 
         expect(status).toBe(200);
-        expect(body).toEqual({ message: 'API running well!' });
+        expect(body).toStrictEqual({ message: 'API running well!' });
     });
 
     it('should handle unknown routes', async () => {
         const { status, body } = await request(app).get('/test');
 
         expect(status).toBe(404);
-        expect(body).toEqual({ message: 'Route not found!' });
+        expect(body).toStrictEqual({ message: 'Route not found!' });
     });
 });

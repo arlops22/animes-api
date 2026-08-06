@@ -1,4 +1,5 @@
 import { Router } from 'express';
+import prisma from '../../database/prisma-client.js';
 
 import AnimeController from '../../controllers/anime.controller.js';
 import AnimesServicePrisma from '../../repositories/animes.repository.js';
@@ -11,7 +12,7 @@ class AnimeRoutes {
 
     constructor() {
         this.router = Router();
-        this.service = new AnimesServicePrisma();
+        this.service = new AnimesServicePrisma(prisma);
         this.animeController = new AnimeController(this.service);
         this.initRoutes();
     }

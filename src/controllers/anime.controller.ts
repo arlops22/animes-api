@@ -5,24 +5,18 @@ import { AnimesRepository } from '../interfaces/anime.interface.js';
 class AnimeController {
     constructor(private service: AnimesRepository) {}
 
-    store() {}
+    store(req: Request, res: Response) {}
 
     getById() {}
 
     async get(req: Request, res: Response) {
-        try {
-            const data = await this.service.findAll();
-            return res.status(200).json(data);
-        } catch (error) {
-            throw error;
-        }
+        const data = await this.service.findAll();
+        return res.status(200).json(data);
     }
 
-    update() {}
+    update(req: Request, res: Response) {}
 
-    delete() {}
-
-    updateThumb() {}
+    delete(req: Request, res: Response) {}
 }
 
 export default AnimeController;
