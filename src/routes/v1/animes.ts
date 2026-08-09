@@ -18,7 +18,11 @@ class AnimeRoutes {
     }
 
     initRoutes() {
+        this.router.post('/', this.animeController.store.bind(this));
         this.router.get('/', this.animeController.get.bind(this));
+        this.router.get('/:id', this.animeController.getById.bind(this));
+        this.router.delete('/:id', this.animeController.delete.bind(this));
+        this.router.patch('/:id', this.animeController.update.bind(this));
     }
 }
 
