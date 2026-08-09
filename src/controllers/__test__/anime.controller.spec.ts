@@ -1,16 +1,15 @@
 import { NextFunction, Request, Response } from 'express';
 import { it, describe, expect, jest, beforeEach } from '@jest/globals';
 import { mockDeep, mockReset } from 'jest-mock-extended';
-import { Prisma } from '../../../generated/prisma/client';
 
 import AnimeController from '../anime.controller';
 import AnimesRepositoryPrisma from '../../repositories/animes.repository';
-import { Anime } from '../../interfaces/anime.interface';
+import { Anime, AnimeCreatePayload, AnimeUpdatePayload } from '../../interfaces/anime.interface';
 
 const mockAnime: Anime = {
     id: 1,
     name: 'Anime Test',
-    summary: 'This is a test summary',
+    summary: null,
     author: null,
     thumbnail: null,
     createdAt: new Date(),
@@ -36,7 +35,7 @@ describe('Anime Controller', () => {
 
     describe('Store animes endpoint', () => {
         it('should create an anime', async () => {
-            const mockAnimePayload: Prisma.AnimeCreateInput = {
+            const mockAnimePayload: AnimeCreatePayload = {
                 name: 'Anime Test',
             };
             req.body = mockAnimePayload;
@@ -82,6 +81,43 @@ describe('Anime Controller', () => {
                 'status',
                 404,
             );
+        });
+    });
+
+    describe('Update animes endpoint', () => {
+        it('should update an anime', async () => {
+            req = { params: { id: '1' } };
+
+            const mockAnimePayload: AnimeUpdatePayload = {
+                name: 'Anime Test',
+                author: 'Author test',
+                summary: 'This is a test summary',
+            };
+
+            const updatedMockAnime = {
+                ...mockAnime,
+                author: 'Author test',
+                summary: 'This is a test summary',
+            };
+            req.body = mockAnimePayload;
+
+            animeRepositoryMock.update.mockResolvedValue(updatedMockAnime);
+
+            await animeController.update(req as Request, res as Response, next);
+            expect(res.status).toHaveBeenCalledWith(200);
+            expect(res.json).toHaveBeenCalledWith(updatedMockAnime);
+        });
+    });
+
+    describe('Delete animes endpoint', () => {
+        it('should delete an anime', async () => {
+            req = { params: { id: '1' } };
+
+            animeRepositoryMock.delete.mockResolvedValue(mockAnime);
+
+            await animeController.delete(req as Request, res as Response, next);
+            expect(res.status).toHaveBeenCalledWith(200);
+            expect(res.json).toHaveBeenCalledWith(mockAnime);
         });
     });
 });
