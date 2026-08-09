@@ -7,12 +7,8 @@ class AnimeController {
     constructor(private service: AnimesRepository) {}
 
     async store(req: Request, res: Response, next: NextFunction) {
-        try {
-            const response = await this.service.create(req.body);
-            return res.status(201).json(response);
-        } catch (error) {
-            next(new Error());
-        }
+        const response = await this.service.create(req.body);
+        return res.status(201).json(response);
     }
 
     async get(req: Request, res: Response) {
@@ -32,23 +28,15 @@ class AnimeController {
     }
 
     async update(req: Request, res: Response, next: NextFunction) {
-        try {
-            const { id } = req.params;
-            const response = await this.service.update(Number(id), req.body);
-            return res.status(200).json(response);
-        } catch (error) {
-            next(new Error());
-        }
+        const { id } = req.params;
+        const response = await this.service.update(Number(id), req.body);
+        return res.status(200).json(response);
     }
 
     async delete(req: Request, res: Response, next: NextFunction) {
-        try {
-            const { id } = req.params;
-            const response = await this.service.delete(Number(id));
-            return res.status(200).json(response);
-        } catch (error) {
-            next(new Error());
-        }
+        const { id } = req.params;
+        const response = await this.service.delete(Number(id));
+        return res.status(200).json(response);
     }
 }
 
