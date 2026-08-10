@@ -7,7 +7,16 @@ class AnimeController {
     constructor(private service: AnimesRepository) {}
 
     async store(req: Request, res: Response, next: NextFunction) {
-        const response = await this.service.create(req.body);
+        let payload = req.body;
+
+        if (req.file) {
+            payload = {
+                ...payload,
+                thumbnail: req.file.destination,
+            };
+        }
+
+        const response = await this.service.create(payload);
         return res.status(201).json(response);
     }
 
@@ -29,7 +38,15 @@ class AnimeController {
 
     async update(req: Request, res: Response, next: NextFunction) {
         const { id } = req.params;
-        const response = await this.service.update(Number(id), req.body);
+        let payload = req.body;
+
+        if (req.file) {
+            payload = {
+                ...payload,
+                thumbnail: req.file.destination,
+            };
+        }
+        const response = await this.service.update(Number(id), payload);
         return res.status(200).json(response);
     }
 

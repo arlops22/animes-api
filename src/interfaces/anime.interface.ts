@@ -8,20 +8,17 @@ export interface Anime {
     updatedAt: Date;
 }
 
-export interface AnimeCreatePayload {
+export interface AnimePayload {
     name: string;
     author?: string | null;
     summary?: string | null;
-}
-
-export interface AnimeUpdatePayload extends AnimeCreatePayload {
     thumbnail?: string;
 }
 
 export interface AnimesRepository {
-    create(payload: AnimeCreatePayload): Promise<Anime>;
+    create(payload: AnimePayload): Promise<Anime>;
     findAll(): Promise<Anime[]>;
     findById(id: number): Promise<Anime | null>;
-    update(id: number, payload: AnimeUpdatePayload): Promise<Anime>;
+    update(id: number, payload: AnimePayload): Promise<Anime>;
     delete(id: number): Promise<Anime>;
 }

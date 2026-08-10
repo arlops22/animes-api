@@ -1,7 +1,7 @@
 import express, { Application, Response } from 'express';
 import { pinoHttp } from 'pino-http';
 
-import logger from './utils/logger.js';
+import logger from './config/logger.config.js';
 import V1Routes from './routes/v1/index.js';
 import notFoundRouteMiddleware from './middlewares/not-found.middleware.js';
 import errorMiddleware from './middlewares/error.middleware.js';

@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
-import logger from '../utils/logger.js';
+import logger from '../config/logger.config.js';
 
 import HttpException from '../interfaces/httpException.interface.js';
 
