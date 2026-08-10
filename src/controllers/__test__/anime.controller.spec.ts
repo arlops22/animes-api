@@ -4,14 +4,14 @@ import { mockDeep, mockReset } from 'jest-mock-extended';
 
 import AnimeController from '../anime.controller';
 import AnimesRepositoryPrisma from '../../repositories/animes.repository';
-import { Anime, AnimeCreatePayload, AnimeUpdatePayload } from '../../interfaces/anime.interface';
+import { Anime, AnimePayload } from '../../interfaces/anime.interface';
 
 const mockAnime: Anime = {
     id: 1,
     name: 'Anime Test',
     summary: null,
     author: null,
-    thumbnail: null,
+    thumbnail: 'dir/test/anime-thumb.jpeg',
     createdAt: new Date(),
     updatedAt: new Date(),
 };
@@ -24,7 +24,7 @@ describe('Anime Controller', () => {
     const animeController = new AnimeController(animeRepositoryMock);
 
     beforeEach(() => {
-        req = { body: {}, params: {} };
+        req = { body: {}, params: {}, file: {} };
         res = {
             status: jest.fn().mockReturnThis(),
             json: jest.fn(),
@@ -35,10 +35,13 @@ describe('Anime Controller', () => {
 
     describe('Store animes endpoint', () => {
         it('should create an anime', async () => {
-            const mockAnimePayload: AnimeCreatePayload = {
+            const mockAnimePayload: AnimePayload = {
                 name: 'Anime Test',
             };
             req.body = mockAnimePayload;
+            req.file = {
+                destination: 'dir/test/anime-thumb.jpeg',
+            };
 
             animeRepositoryMock.create.mockResolvedValue(mockAnime);
 
@@ -74,13 +77,8 @@ describe('Anime Controller', () => {
 
             animeRepositoryMock.findById.mockResolvedValue(null);
 
-            expect(animeController.getById(req as Request, res as Response)).rejects.toThrow(
-                'Anime not found',
-            );
-            expect(animeController.getById(req as Request, res as Response)).rejects.toHaveProperty(
-                'status',
-                404,
-            );
+            expect(animeController.getById(req as Request, res as Response)).rejects.toThrow('Anime not found');
+            expect(animeController.getById(req as Request, res as Response)).rejects.toHaveProperty('status', 404);
         });
     });
 
@@ -88,7 +86,7 @@ describe('Anime Controller', () => {
         it('should update an anime', async () => {
             req = { params: { id: '1' } };
 
-            const mockAnimePayload: AnimeUpdatePayload = {
+            const mockAnimePayload: AnimePayload = {
                 name: 'Anime Test',
                 author: 'Author test',
                 summary: 'This is a test summary',
@@ -100,6 +98,9 @@ describe('Anime Controller', () => {
                 summary: 'This is a test summary',
             };
             req.body = mockAnimePayload;
+            req.file = {
+                destination: 'dir/test/anime-thumb.jpeg',
+            };
 
             animeRepositoryMock.update.mockResolvedValue(updatedMockAnime);
 
