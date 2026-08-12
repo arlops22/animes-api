@@ -2,7 +2,7 @@ import { it, describe, expect } from '@jest/globals';
 
 import prismaMock from '../../__mocks__/prisma-client.mock';
 import AnimesRepositoryPrisma from '../animes.repository';
-import { Anime, AnimeCreatePayload, AnimeUpdatePayload } from '../../interfaces/anime.interface';
+import { Anime, AnimePayload } from '../../interfaces/anime.interface';
 
 describe('Animes Repository', () => {
     const animesRepository = new AnimesRepositoryPrisma(prismaMock);
@@ -18,7 +18,7 @@ describe('Animes Repository', () => {
 
     describe('Method create', () => {
         it('should create an anime', async () => {
-            const mockAnimePayload: AnimeCreatePayload = {
+            const mockAnimePayload: AnimePayload = {
                 name: 'Anime Test',
             };
 
@@ -34,7 +34,7 @@ describe('Animes Repository', () => {
         it('should return all animes', async () => {
             prismaMock.anime.findMany.mockResolvedValue([mockAnime]);
 
-            const animes = await animesRepository.findAll();
+            const animes = await animesRepository.findAll({ name: '' });
 
             expect(animes).toStrictEqual([mockAnime]);
             expect(prismaMock.anime.findMany).toHaveBeenCalledTimes(1);
@@ -56,7 +56,7 @@ describe('Animes Repository', () => {
 
     describe('Method update', () => {
         it('should update an anime', async () => {
-            const mockAnimePayload: AnimeUpdatePayload = {
+            const mockAnimePayload: AnimePayload = {
                 name: 'Anime Test',
                 author: 'Author test',
                 summary: 'This is a test summary',

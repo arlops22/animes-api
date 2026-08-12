@@ -21,7 +21,7 @@ class AnimeController {
     }
 
     async get(req: Request, res: Response) {
-        const data = await this.service.findAll();
+        const data = await this.service.findAll(req.query);
         return res.status(200).json(data);
     }
 
