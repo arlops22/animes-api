@@ -4,7 +4,7 @@
         "module": "NodeNext",
         "moduleResolution": "NodeNext",
         "outDir": "./dist",
-        "rootDir": "./src",
+        "rootDir": "./",
         "strict": true,
         "esModuleInterop": true,
         "skipLibCheck": true,
@@ -16,7 +16,7 @@
         "declaration": false,
         "removeComments": true
     },
-    "include": ["src/**/*", "tests"],
+    "include": ["src/**/*", "tests", "generated/prisma"],
     "exclude": ["node_modules", "dist", "**/*.test.ts", "**/*.spec.ts"],
     "ts-node": {
         "esm": true

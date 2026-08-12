@@ -5,10 +5,17 @@ import App from '../app';
 describe('Server', () => {
     const app = new App().app;
 
-    it('should run without error', async () => {
-        const response = await request(app).get('/healthCheck');
+    it('should be healthy', async () => {
+        const { status, body } = await request(app).get('/health-check');
 
-        expect(response.status).toBe(200);
-        expect(response.body).toEqual({ message: 'API running well!' });
+        expect(status).toBe(200);
+        expect(body).toStrictEqual({ message: 'API running well!' });
+    });
+
+    it('should handle unknown routes', async () => {
+        const { status, body } = await request(app).get('/test');
+
+        expect(status).toBe(404);
+        expect(body).toStrictEqual({ message: 'Route not found!' });
     });
 });

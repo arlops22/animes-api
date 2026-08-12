@@ -1,24 +1,40 @@
 import express, { Application, Response } from 'express';
-import 'dotenv/config';
+import { pinoHttp } from 'pino-http';
+
+import logger from './config/logger.config.js';
+import V1Routes from './routes/v1/index.js';
+import notFoundRouteMiddleware from './middlewares/not-found.middleware.js';
+import errorMiddleware from './middlewares/error.middleware.js';
 
 class App {
     public app: Application;
+    private v1Routes = new V1Routes();
 
     constructor() {
         this.app = express();
 
-        this.config();
-        this.routes();
+        this.initializeMiddleware();
+        this.initializeRoutes();
+        this.initializeErrorHandling();
     }
 
-    config() {
+    private initializeMiddleware() {
         this.app.use(express.json());
+        this.app.use(express.urlencoded({ extended: true }));
+        this.app.use(pinoHttp({ logger }));
     }
 
-    routes() {
-        this.app.get('/healthCheck', (_, res: Response) => {
+    private initializeErrorHandling() {
+        this.app.use(notFoundRouteMiddleware);
+        this.app.use(errorMiddleware);
+    }
+
+    private initializeRoutes() {
+        this.app.get('/health-check', (_, res: Response) => {
             res.status(200).json({ message: 'API running well!' });
         });
+
+        this.app.use('/v1', this.v1Routes.router);
     }
 
     listen(port: string) {
