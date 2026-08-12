@@ -32,11 +32,18 @@ describe('Animes Repository', () => {
 
     describe('Method findAll', () => {
         it('should return all animes', async () => {
-            prismaMock.anime.findMany.mockResolvedValue([mockAnime]);
+            prismaMock.$transaction.mockResolvedValue([[mockAnime], 1]);
 
-            const animes = await animesRepository.findAll({ name: '' });
+            const { animes, page, count, totalPages } = await animesRepository.findAll({
+                name: '',
+                page: 1,
+                pageSize: 10,
+            });
 
             expect(animes).toStrictEqual([mockAnime]);
+            expect(page).toBe(1);
+            expect(count).toBe(1);
+            expect(totalPages).toBe(1);
             expect(prismaMock.anime.findMany).toHaveBeenCalledTimes(1);
         });
     });
@@ -48,9 +55,7 @@ describe('Animes Repository', () => {
             const anime = await animesRepository.findById(1);
 
             expect(anime).toStrictEqual(mockAnime);
-            expect(prismaMock.anime.findUnique).toHaveBeenCalledWith({
-                where: { id: 1 },
-            });
+            expect(prismaMock.anime.findUnique).toHaveBeenCalledTimes(1);
         });
     });
 

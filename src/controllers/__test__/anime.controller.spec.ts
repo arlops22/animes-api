@@ -4,7 +4,7 @@ import { mockDeep, mockReset } from 'jest-mock-extended';
 
 import AnimeController from '../anime.controller';
 import AnimesRepositoryPrisma from '../../repositories/animes.repository';
-import { Anime, AnimePayload } from '../../interfaces/anime.interface';
+import { Anime, AnimeList, AnimePayload } from '../../interfaces/anime.interface';
 
 const mockAnime: Anime = {
     id: 1,
@@ -53,11 +53,17 @@ describe('Anime Controller', () => {
 
     describe('Get animes endpoint', () => {
         it('should return all animes', async () => {
-            animeRepositoryMock.findAll.mockResolvedValue([mockAnime]);
+            const resolvedFindAll: AnimeList = {
+                animes: [mockAnime],
+                page: 1,
+                totalPages: 1,
+                count: 1,
+            };
+            animeRepositoryMock.findAll.mockResolvedValue(resolvedFindAll);
 
             await animeController.get(req as Request, res as Response);
             expect(res.status).toHaveBeenCalledWith(200);
-            expect(res.json).toHaveBeenCalledWith([mockAnime]);
+            expect(res.json).toHaveBeenCalledWith(resolvedFindAll);
         });
     });
 
