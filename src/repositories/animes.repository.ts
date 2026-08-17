@@ -29,7 +29,6 @@ export class AnimesRepositoryPrisma implements IAnimesRepository {
                     updatedAt: true,
                     summary: true,
                     author: true,
-                    seasons: true,
                 },
                 skip,
                 take: limit,
@@ -61,7 +60,23 @@ export class AnimesRepositoryPrisma implements IAnimesRepository {
                 updatedAt: true,
                 summary: true,
                 author: true,
-                seasons: true,
+                seasons: {
+                    select: {
+                        title: true,
+                        releaseDate: true,
+                        createdAt: true,
+                        updatedAt: true,
+                        episodes: {
+                            select: {
+                                title: true,
+                                releaseDate: true,
+                                synopsis: true,
+                                createdAt: true,
+                                updatedAt: true,
+                            },
+                        },
+                    },
+                },
             },
         });
     }

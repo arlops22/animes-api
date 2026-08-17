@@ -1,9 +1,10 @@
 model Season {
-    id          Int      @id @default(autoincrement())
-    title       String   @db.VarChar(100)
+    id          Int       @id @default(autoincrement())
+    title       String    @db.VarChar(100)
     releaseDate DateTime
-    createdAt   DateTime @default(now())
-    updatedAt   DateTime @updatedAt
-    anime       Anime    @relation(fields: [animeId], references: [id])
+    createdAt   DateTime  @default(now())
+    updatedAt   DateTime  @updatedAt
+    episodes    Episode[]
+    anime       Anime     @relation(fields: [animeId], references: [id])
     animeId     Int
 }
