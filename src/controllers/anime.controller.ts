@@ -1,12 +1,11 @@
-import { NextFunction, Request, Response } from 'express';
+import { Request, Response } from 'express';
 
-import { AnimesRepository } from '../interfaces/anime.interface.js';
-import HttpException from '../interfaces/httpException.interface.js';
+import { AnimeService } from '../services/anime.service.js';
 
-class AnimeController {
-    constructor(private service: AnimesRepository) {}
+export class AnimeController {
+    constructor(private service: AnimeService) {}
 
-    async store(req: Request, res: Response, next: NextFunction) {
+    async store(req: Request, res: Response) {
         let payload = req.body;
 
         if (req.file) {
@@ -21,22 +20,19 @@ class AnimeController {
     }
 
     async get(req: Request, res: Response) {
-        const data = await this.service.findAll(req.query);
+        const data = await this.service.get(req.query);
         return res.status(200).json(data);
     }
 
     async getById(req: Request, res: Response) {
         const { id } = req.params;
-        const responseData = await this.service.findById(Number(id));
 
-        if (!responseData) {
-            throw new HttpException(404, 'Anime not found');
-        }
+        const response = await this.service.getById(Number(id));
 
-        return res.status(200).json(responseData);
+        return res.status(200).json(response);
     }
 
-    async update(req: Request, res: Response, next: NextFunction) {
+    async update(req: Request, res: Response) {
         const { id } = req.params;
         let payload = req.body;
 
@@ -50,11 +46,9 @@ class AnimeController {
         return res.status(200).json(response);
     }
 
-    async delete(req: Request, res: Response, next: NextFunction) {
+    async delete(req: Request, res: Response) {
         const { id } = req.params;
         const response = await this.service.delete(Number(id));
         return res.status(200).json(response);
     }
 }
-
-export default AnimeController;

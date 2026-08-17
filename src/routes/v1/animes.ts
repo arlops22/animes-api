@@ -1,22 +1,28 @@
 import { Router } from 'express';
 import { body } from 'express-validator';
-import prisma from '../../database/prisma-client.js';
-import upload from '../../config/multer.config.js';
+import { prisma } from '../../database/prisma-client.js';
+import { upload } from '../../config/multer.config.js';
 
-import { AnimesRepository } from '../../interfaces/anime.interface.js';
-import AnimeController from '../../controllers/anime.controller.js';
-import AnimesServicePrisma from '../../repositories/animes.repository.js';
-import validatorMiddleware from '../../middlewares/validator.middleware.js';
+import { AnimeController } from '../../controllers/anime.controller.js';
+import { AnimeService } from '../../services/anime.service.js';
+import { AnimesRepositoryPrisma } from '../../repositories/animes.repository.js';
+import { IAnimesRepository } from '../../interfaces/anime.interface.js';
+import { SeasonRoutes } from './season.js';
+import { validatorMiddleware } from '../../middlewares/validator.middleware.js';
 
 class AnimeRoutes {
     public router: Router;
-    private service: AnimesRepository;
+    private animeRepository: IAnimesRepository;
+    private service: AnimeService;
     private animeController: AnimeController;
+    private seasonRouts: SeasonRoutes;
 
     constructor() {
         this.router = Router();
-        this.service = new AnimesServicePrisma(prisma);
+        this.animeRepository = new AnimesRepositoryPrisma(prisma);
+        this.service = new AnimeService(this.animeRepository);
         this.animeController = new AnimeController(this.service);
+        this.seasonRouts = new SeasonRoutes();
         this.initRoutes();
     }
 
@@ -40,6 +46,7 @@ class AnimeRoutes {
             this.validatePayload(),
             this.animeController.update.bind(this),
         );
+        this.router.use('/:animeId/seasons', this.seasonRouts.router);
     }
 }
 

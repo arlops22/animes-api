@@ -1,12 +1,12 @@
 import express, { Application, Response } from 'express';
 import { pinoHttp } from 'pino-http';
 
-import logger from './config/logger.config.js';
-import V1Routes from './routes/v1/index.js';
-import notFoundRouteMiddleware from './middlewares/not-found.middleware.js';
-import errorMiddleware from './middlewares/error.middleware.js';
+import { logger } from './config/logger.config.js';
+import { V1Routes } from './routes/v1/index.js';
+import { notFoundRouteMiddleware } from './middlewares/not-found.middleware.js';
+import { errorMiddleware } from './middlewares/error.middleware.js';
 
-class App {
+export class App {
     public app: Application;
     private v1Routes = new V1Routes();
 
@@ -43,5 +43,3 @@ class App {
         });
     }
 }
-
-export default App;

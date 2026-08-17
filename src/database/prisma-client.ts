@@ -2,7 +2,7 @@ import 'dotenv/config';
 import { PrismaPg } from '@prisma/adapter-pg';
 
 import { PrismaClient } from '../../generated/prisma/client.js';
-import logger from '../config/logger.config.js';
+import { logger } from '../config/logger.config.js';
 
 const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL });
 const prisma = new PrismaClient({
@@ -40,4 +40,4 @@ prisma.$on('error', e => {
     logger.error({ prisma: { message: e.message } }, 'Prisma Error');
 });
 
-export default prisma;
+export { prisma };

@@ -2,7 +2,7 @@ import { Router } from 'express';
 
 import AnimeRoutes from './animes.js';
 
-class V1Routes {
+export class V1Routes {
     public router: Router;
     private animeRoutes = new AnimeRoutes();
 
@@ -11,5 +11,3 @@ class V1Routes {
         this.router.use('/animes', this.animeRoutes.router);
     }
 }
-
-export default V1Routes;

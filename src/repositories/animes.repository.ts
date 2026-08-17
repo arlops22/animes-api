@@ -1,20 +1,20 @@
 import { PrismaClient } from '../../generated/prisma/client.js';
-import { Anime, AnimePayload, AnimeFilter, AnimesRepository, AnimeList } from '../interfaces/anime.interface.js';
+import { IAnime, IAnimePayload, IAnimeFilter, IAnimesRepository, IAnimeList } from '../interfaces/anime.interface.js';
 
-class AnimesRepositoryPrisma implements AnimesRepository {
+export class AnimesRepositoryPrisma implements IAnimesRepository {
     private prisma: PrismaClient;
 
     constructor(prisma: PrismaClient) {
         this.prisma = prisma;
     }
 
-    create(payload: AnimePayload): Promise<Anime> {
+    create(payload: IAnimePayload): Promise<IAnime> {
         return this.prisma.anime.create({
             data: payload,
         });
     }
 
-    async findAll(filter: AnimeFilter): Promise<AnimeList> {
+    async findAll(filter: IAnimeFilter): Promise<IAnimeList> {
         const limit = Math.max(1, Number(filter.pageSize) || 20);
         const page = Math.max(1, Number(filter.page) || 1);
         const skip = (page - 1) * limit;
@@ -29,6 +29,7 @@ class AnimesRepositoryPrisma implements AnimesRepository {
                     updatedAt: true,
                     summary: true,
                     author: true,
+                    seasons: true,
                 },
                 skip,
                 take: limit,
@@ -49,7 +50,7 @@ class AnimesRepositoryPrisma implements AnimesRepository {
         return { count, totalPages, page, animes };
     }
 
-    findById(id: number): Promise<Anime | null> {
+    findById(id: number): Promise<IAnime | null> {
         return this.prisma.anime.findUnique({
             where: { id },
             select: {
@@ -60,11 +61,12 @@ class AnimesRepositoryPrisma implements AnimesRepository {
                 updatedAt: true,
                 summary: true,
                 author: true,
+                seasons: true,
             },
         });
     }
 
-    update(id: number, payload: AnimePayload) {
+    update(id: number, payload: IAnimePayload) {
         return this.prisma.anime.update({
             where: { id },
             data: payload,
@@ -77,5 +79,3 @@ class AnimesRepositoryPrisma implements AnimesRepository {
         });
     }
 }
-
-export default AnimesRepositoryPrisma;

@@ -1,4 +1,4 @@
-export interface Anime {
+export interface IAnime {
     id: number;
     name: string;
     author: string | null;
@@ -8,30 +8,30 @@ export interface Anime {
     updatedAt: Date;
 }
 
-export interface AnimePayload {
+export interface IAnimePayload {
     name: string;
     author?: string | null;
     summary?: string | null;
     thumbnail?: string;
 }
 
-export interface AnimeFilter {
+export interface IAnimeFilter {
     name?: string;
     page?: number;
     pageSize?: number;
 }
 
-export interface AnimeList {
-    animes: Anime[];
+export interface IAnimeList {
+    animes: IAnime[];
     count: number;
     page: number;
     totalPages: number;
 }
 
-export interface AnimesRepository {
-    create(payload: AnimePayload): Promise<Anime>;
-    findAll(filter: AnimeFilter): Promise<AnimeList>;
-    findById(id: number): Promise<Anime | null>;
-    update(id: number, payload: AnimePayload): Promise<Anime>;
-    delete(id: number): Promise<Anime>;
+export interface IAnimesRepository {
+    create(payload: IAnimePayload): Promise<IAnime>;
+    findAll(filter: IAnimeFilter): Promise<IAnimeList>;
+    findById(id: number): Promise<IAnime | null>;
+    update(id: number, payload: IAnimePayload): Promise<IAnime>;
+    delete(id: number): Promise<IAnime>;
 }
