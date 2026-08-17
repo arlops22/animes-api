@@ -15,14 +15,14 @@ class AnimeRoutes {
     private animeRepository: IAnimesRepository;
     private service: AnimeService;
     private animeController: AnimeController;
-    private seasonRouts: SeasonRoutes;
+    private seasonRoutes: SeasonRoutes;
 
     constructor() {
         this.router = Router();
         this.animeRepository = new AnimesRepositoryPrisma(prisma);
         this.service = new AnimeService(this.animeRepository);
         this.animeController = new AnimeController(this.service);
-        this.seasonRouts = new SeasonRoutes();
+        this.seasonRoutes = new SeasonRoutes();
         this.initRoutes();
     }
 
@@ -46,7 +46,7 @@ class AnimeRoutes {
             this.validatePayload(),
             this.animeController.update.bind(this),
         );
-        this.router.use('/:animeId/seasons', this.seasonRouts.router);
+        this.router.use('/:animeId/seasons', this.seasonRoutes.router);
     }
 }
 

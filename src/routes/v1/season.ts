@@ -25,6 +25,7 @@ export class SeasonRoutes {
     }
 
     initRoutes() {
+        this.router.get('/', this.seasonController.get.bind(this));
         this.router.post('/', this.seasonController.store.bind(this));
         this.router.delete('/:id', this.seasonController.delete.bind(this));
         this.router.patch('/:id', this.seasonController.update.bind(this));

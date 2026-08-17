@@ -15,6 +15,8 @@ export interface ISeasonPayload {
 
 export interface ISeasonsRepository {
     create(payload: ISeasonPayload): Promise<ISeason>;
+    findAll(animeId: number): Promise<ISeason[]>;
+    findById(id: number): Promise<ISeason | null>;
     update(id: number, payload: ISeasonPayload): Promise<ISeason>;
     delete(id: number): Promise<ISeason>;
 }

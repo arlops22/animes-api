@@ -14,6 +14,12 @@ export class SeasonController {
         return res.status(201).json(response);
     }
 
+    async get(req: Request, res: Response) {
+        const { animeId } = req.params;
+        const data = await this.seasonService.get(Number(animeId));
+        return res.status(200).json(data);
+    }
+
     async update(req: Request, res: Response) {
         const { animeId, id } = req.params;
         const payload: ISeasonPayload = { ...req.body, animeId: Number(animeId) };
