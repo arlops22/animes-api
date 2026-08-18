@@ -11,7 +11,7 @@ import { SeasonRoutes } from './season.js';
 import { validatorMiddleware } from '../../middlewares/validator.middleware.js';
 import { CharactersRoutes } from './characters.js';
 
-class AnimeRoutes {
+export class AnimeRoutes {
     public router: Router;
     private animeRepository: IAnimesRepository;
     private service: AnimeService;
@@ -53,5 +53,3 @@ class AnimeRoutes {
         this.router.use('/:animeId/characters', this.characterRoutes.router);
     }
 }
-
-export default AnimeRoutes;

@@ -1,6 +1,6 @@
 import { Router } from 'express';
 
-import AnimeRoutes from './animes.js';
+import { AnimeRoutes } from './animes.js';
 import { EpisodeRoutes } from './episode.js';
 
 export class V1Routes {
