@@ -1,4 +1,5 @@
 import { Router } from 'express';
+import { body } from 'express-validator';
 import { prisma } from '../../database/prisma-client.js';
 
 import { ISeasonsRepository } from '../../interfaces/season.interface.js';
@@ -7,6 +8,7 @@ import { EpisodeController } from '../../controllers/episode.controller.js';
 import { EpisodeService } from '../../services/episode.service.js';
 import { EpisodesRepositoryPrisma } from '../../repositories/episodes.repository.js';
 import { IEpisodesRepository } from '../../interfaces/episode.interface.js';
+import { validatorMiddleware } from '../../middlewares/validator.middleware.js';
 
 export class EpisodeRoutes {
     public router: Router;
@@ -24,9 +26,18 @@ export class EpisodeRoutes {
         this.initRoutes();
     }
 
+    private validatePayload() {
+        return [
+            body('title').notEmpty().withMessage('Title is required'),
+            body('releaseDate').notEmpty().withMessage('Release date is required'),
+            body('synopsis').notEmpty().withMessage('Synopsis is required'),
+            validatorMiddleware,
+        ];
+    }
+
     initRoutes() {
-        this.router.post('/', this.episodeController.store.bind(this));
+        this.router.post('/', this.validatePayload(), this.episodeController.store.bind(this));
         this.router.delete('/:id', this.episodeController.delete.bind(this));
-        this.router.patch('/:id', this.episodeController.update.bind(this));
+        this.router.patch('/:id', this.validatePayload(), this.episodeController.update.bind(this));
     }
 }

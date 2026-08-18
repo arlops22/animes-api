@@ -1,4 +1,5 @@
 import { Router } from 'express';
+import { body } from 'express-validator';
 import { prisma } from '../../database/prisma-client.js';
 import { upload } from '../../config/multer.config.js';
 
@@ -8,6 +9,7 @@ import { ICharactersRepository } from '../../interfaces/character.interface.js';
 import { CharacterService } from '../../services/character.service.js';
 import { CharactersRepositoryPrisma } from '../../repositories/character.repository.js';
 import { CharacterController } from '../../controllers/character.controller.js';
+import { validatorMiddleware } from '../../middlewares/validator.middleware.js';
 
 export class CharactersRoutes {
     public router: Router;
@@ -25,14 +27,24 @@ export class CharactersRoutes {
         this.initRoutes();
     }
 
+    private validatePayload() {
+        return [body('name').notEmpty().withMessage('Name is required'), validatorMiddleware];
+    }
+
     initRoutes() {
-        this.router.post('/', upload.single('photo'), this.characterController.store.bind(this.characterController));
+        this.router.post(
+            '/',
+            upload.single('photo'),
+            this.validatePayload(),
+            this.characterController.store.bind(this.characterController),
+        );
         this.router.get('/', this.characterController.get.bind(this.characterController));
         this.router.get('/:id', this.characterController.getById.bind(this.characterController));
         this.router.delete('/:id', this.characterController.delete.bind(this.characterController));
         this.router.patch(
             '/:id',
             upload.single('photo'),
+            this.validatePayload(),
             this.characterController.update.bind(this.characterController),
         );
     }
