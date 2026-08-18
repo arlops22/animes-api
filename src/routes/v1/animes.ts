@@ -9,6 +9,7 @@ import { AnimesRepositoryPrisma } from '../../repositories/animes.repository.js'
 import { IAnimesRepository } from '../../interfaces/anime.interface.js';
 import { SeasonRoutes } from './season.js';
 import { validatorMiddleware } from '../../middlewares/validator.middleware.js';
+import { CharactersRoutes } from './characters.js';
 
 class AnimeRoutes {
     public router: Router;
@@ -16,6 +17,7 @@ class AnimeRoutes {
     private service: AnimeService;
     private animeController: AnimeController;
     private seasonRoutes: SeasonRoutes;
+    private characterRoutes: CharactersRoutes;
 
     constructor() {
         this.router = Router();
@@ -23,6 +25,7 @@ class AnimeRoutes {
         this.service = new AnimeService(this.animeRepository);
         this.animeController = new AnimeController(this.service);
         this.seasonRoutes = new SeasonRoutes();
+        this.characterRoutes = new CharactersRoutes();
         this.initRoutes();
     }
 
@@ -47,6 +50,7 @@ class AnimeRoutes {
             this.animeController.update.bind(this),
         );
         this.router.use('/:animeId/seasons', this.seasonRoutes.router);
+        this.router.use('/:animeId/characters', this.characterRoutes.router);
     }
 }
 

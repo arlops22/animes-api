@@ -1,10 +1,11 @@
 model Anime {
-  id        Int      @id @default(autoincrement())
-  name      String   @db.VarChar(100)
-  author    String?  @db.VarChar(100)
-  summary   String?  @db.Text
-  thumbnail String?  @db.VarChar(255)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  seasons   Season[]
+  id         Int         @id @default(autoincrement())
+  name       String      @db.VarChar(100)
+  author     String?     @db.VarChar(100)
+  summary    String?     @db.Text
+  thumbnail  String?     @db.VarChar(255)
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
+  seasons    Season[]
+  characters Character[]
 }

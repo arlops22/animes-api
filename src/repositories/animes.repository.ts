@@ -60,6 +60,16 @@ export class AnimesRepositoryPrisma implements IAnimesRepository {
                 updatedAt: true,
                 summary: true,
                 author: true,
+                characters: {
+                    select: {
+                        name: true,
+                        description: true,
+                        lifeStory: true,
+                        photo: true,
+                        createdAt: true,
+                        updatedAt: true,
+                    },
+                },
                 seasons: {
                     select: {
                         title: true,

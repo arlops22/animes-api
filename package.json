@@ -17,8 +17,8 @@
         "format:check": "prettier --check .",
         "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
         "test:coverage": "node --experimental-vm-modules node_modules/jest/bin/jest.js --coverage",
-        "prisma:generate": "prisma generate",
         "migration:create": "prisma migrate dev --create-only",
+        "prisma:generate": "prisma generate",
         "migrate:dev": "prisma migrate dev"
     },
     "devDependencies": {
