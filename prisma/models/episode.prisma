@@ -5,6 +5,6 @@ model Episode {
     synopsis    String   @db.Text
     createdAt   DateTime @default(now())
     updatedAt   DateTime @updatedAt
-    season      Season   @relation(fields: [seasonId], references: [id])
+    season      Season   @relation(fields: [seasonId], references: [id], onDelete: Cascade)
     seasonId    Int
 }

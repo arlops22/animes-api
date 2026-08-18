@@ -5,6 +5,6 @@ model Season {
     createdAt   DateTime  @default(now())
     updatedAt   DateTime  @updatedAt
     episodes    Episode[]
-    anime       Anime     @relation(fields: [animeId], references: [id])
+    anime       Anime     @relation(fields: [animeId], references: [id], onDelete: Cascade)
     animeId     Int
 }

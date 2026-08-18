@@ -6,6 +6,6 @@ model Character {
     photo       String?  @db.VarChar(255)
     createdAt   DateTime @default(now())
     updatedAt   DateTime @updatedAt
-    anime       Anime    @relation(fields: [animeId], references: [id])
+    anime       Anime    @relation(fields: [animeId], references: [id], onDelete: Cascade)
     animeId     Int
 }
