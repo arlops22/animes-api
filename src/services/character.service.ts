@@ -20,7 +20,7 @@ export class CharacterService {
         return response;
     }
 
-    async get(animeId: number) {
+    async listByAnimeId(animeId: number) {
         const response = await this.characterRepository.findAll(animeId);
         return response;
     }

@@ -20,7 +20,7 @@ export class AnimeController {
     }
 
     async get(req: Request, res: Response) {
-        const data = await this.service.get(req.query);
+        const data = await this.service.list(req.query);
         return res.status(200).json(data);
     }
 

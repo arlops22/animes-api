@@ -23,7 +23,7 @@ export class CharacterController {
     async get(req: Request, res: Response) {
         const { animeId } = req.params;
 
-        const response = await this.service.get(Number(animeId));
+        const response = await this.service.listByAnimeId(Number(animeId));
         return res.status(200).json(response);
     }
 

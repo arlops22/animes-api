@@ -20,7 +20,7 @@ export class SeasonService {
         return response;
     }
 
-    async get(animeId: number) {
+    async listByAnimeId(animeId: number) {
         const response = await this.seasonRepository.findAll(animeId);
         return response;
     }

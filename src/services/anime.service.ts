@@ -9,7 +9,7 @@ export class AnimeService {
         return response;
     }
 
-    async get(filter: IAnimeFilter): Promise<IAnimeList> {
+    async list(filter: IAnimeFilter): Promise<IAnimeList> {
         const response = await this.service.findAll(filter);
         return response;
     }

@@ -16,7 +16,7 @@ export class SeasonController {
 
     async get(req: Request, res: Response) {
         const { animeId } = req.params;
-        const data = await this.seasonService.get(Number(animeId));
+        const data = await this.seasonService.listByAnimeId(Number(animeId));
         return res.status(200).json(data);
     }
 
