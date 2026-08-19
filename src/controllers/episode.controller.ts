@@ -30,7 +30,7 @@ export class EpisodeController {
 
     async delete(req: Request, res: Response) {
         const { id } = req.params;
-        const response = await this.episodeService.delete(Number(id));
-        return res.status(200).json(response);
+        await this.episodeService.delete(Number(id));
+        return res.sendStatus(204);
     }
 }
