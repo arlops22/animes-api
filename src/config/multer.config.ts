@@ -1,9 +1,9 @@
 import multer from 'multer';
-import path from 'path';
+import path from 'node:path';
 
 const storage = multer.diskStorage({
     destination: function (req, file, callback) {
-        callback(null, path.resolve('uploads'));
+        callback(null, path.resolve(__dirname, '../..', 'uploads'));
     },
     filename: function (req, file, callback) {
         const time = new Date().getTime();

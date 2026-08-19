@@ -12,7 +12,7 @@ export class CharacterController {
         if (req.file) {
             payload = {
                 ...payload,
-                photo: req.file.destination,
+                photo: req.file.filename,
             };
         }
 
@@ -41,7 +41,7 @@ export class CharacterController {
         if (req.file) {
             payload = {
                 ...payload,
-                photo: req.file.destination,
+                photo: req.file.filename,
             };
         }
         const response = await this.service.update(Number(id), payload);

@@ -1,4 +1,5 @@
 import express, { Application, Response } from 'express';
+import path from 'node:path';
 import { pinoHttp } from 'pino-http';
 
 import { logger } from './config/logger.config.js';
@@ -34,6 +35,7 @@ export class App {
             res.status(200).json({ message: 'API running well!' });
         });
 
+        this.app.use('/uploads', express.static(path.resolve(__dirname, '../..', 'uploads')));
         this.app.use('/v1', this.v1Routes.router);
     }
 

@@ -11,7 +11,7 @@ export class AnimeController {
         if (req.file) {
             payload = {
                 ...payload,
-                thumbnail: req.file.destination,
+                thumbnail: req.file.filename,
             };
         }
 
@@ -39,7 +39,7 @@ export class AnimeController {
         if (req.file) {
             payload = {
                 ...payload,
-                thumbnail: req.file.destination,
+                thumbnail: req.file.filename,
             };
         }
         const response = await this.service.update(Number(id), payload);
