@@ -10,6 +10,7 @@ import { IAnimesRepository } from '../../interfaces/anime.interface.js';
 import { SeasonRoutes } from './season.js';
 import { validatorMiddleware } from '../../middlewares/validator.middleware.js';
 import { CharactersRoutes } from './characters.js';
+import { PowerRoutes } from './power.js';
 
 export class AnimeRoutes {
     public router: Router;
@@ -18,6 +19,7 @@ export class AnimeRoutes {
     private animeController: AnimeController;
     private seasonRoutes: SeasonRoutes;
     private characterRoutes: CharactersRoutes;
+    private powerRoutes: PowerRoutes;
 
     constructor() {
         this.router = Router();
@@ -26,6 +28,7 @@ export class AnimeRoutes {
         this.animeController = new AnimeController(this.service);
         this.seasonRoutes = new SeasonRoutes();
         this.characterRoutes = new CharactersRoutes();
+        this.powerRoutes = new PowerRoutes();
         this.initRoutes();
     }
 
@@ -51,5 +54,6 @@ export class AnimeRoutes {
         );
         this.router.use('/:animeId/seasons', this.seasonRoutes.router);
         this.router.use('/:animeId/characters', this.characterRoutes.router);
+        this.router.use('/:animeId/powers', this.powerRoutes.router);
     }
 }

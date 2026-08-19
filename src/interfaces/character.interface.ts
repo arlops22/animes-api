@@ -9,13 +9,7 @@ export interface ICharacter {
     updatedAt: Date;
 }
 
-export interface ICharacterPayload {
-    name: string;
-    description: string;
-    lifeStory: string;
-    photo: string;
-    animeId: number;
-}
+export type ICharacterPayload = Omit<ICharacter, 'id' | 'createdAt' | 'updatedAt'>;
 
 export interface ICharactersRepository {
     create(payload: ICharacterPayload): Promise<ICharacter>;

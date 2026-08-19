@@ -14,7 +14,7 @@ export class SeasonsRepositoryPrisma implements ISeasonsRepository {
         });
     }
 
-    async findAll(animeId: number): Promise<ISeason[]> {
+    findAll(animeId: number): Promise<ISeason[]> {
         return this.prisma.season.findMany({
             where: {
                 animeId,

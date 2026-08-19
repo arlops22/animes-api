@@ -1,0 +1,8 @@
+model CharacterPower {
+    id          Int       @id @default(autoincrement())
+    character   Character @relation(fields: [characterId], references: [id], onDelete: Cascade)
+    characterId Int
+    power       Power     @relation(fields: [powerId], references: [id], onDelete: Cascade)
+    powerId     Int
+    level       Int
+}
