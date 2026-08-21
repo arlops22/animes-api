@@ -7,7 +7,18 @@ export class CharacterController {
 
     async store(req: Request, res: Response) {
         const { animeId } = req.params;
-        let payload = { ...req.body, animeId: Number(animeId) };
+        const { powers, ...requestBody } = req.body;
+        let payload = {
+            ...requestBody,
+            animeId: Number(animeId),
+        };
+
+        if (powers) {
+            payload = {
+                ...payload,
+                powers: JSON.parse(powers),
+            };
+        }
 
         if (req.file) {
             payload = {
@@ -36,7 +47,18 @@ export class CharacterController {
 
     async update(req: Request, res: Response) {
         const { animeId, id } = req.params;
-        let payload = { ...req.body, animeId: Number(animeId) };
+        const { powers, ...requestBody } = req.body;
+        let payload = {
+            ...requestBody,
+            animeId: Number(animeId),
+        };
+
+        if (powers) {
+            payload = {
+                ...payload,
+                powers: JSON.parse(powers),
+            };
+        }
 
         if (req.file) {
             payload = {

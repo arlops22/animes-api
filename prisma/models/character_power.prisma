@@ -5,4 +5,6 @@ model CharacterPower {
     power       Power     @relation(fields: [powerId], references: [id], onDelete: Cascade)
     powerId     Int
     level       Int
+
+    @@unique([characterId, powerId])
 }

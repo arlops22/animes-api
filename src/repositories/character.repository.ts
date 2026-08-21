@@ -9,13 +9,52 @@ export class CharactersRepositoryPrisma implements ICharactersRepository {
         this.prisma = prisma;
     }
 
-    create(payload: ICharacterPayload): Promise<ICharacter> {
-        return this.prisma.character.create({
-            data: payload,
+    create(payload: ICharacterPayload) {
+        const { powers, ...characterPayload } = payload;
+
+        return this.prisma.$transaction(async tx => {
+            const character = await tx.character.create({
+                data: characterPayload,
+            });
+
+            if (powers?.length > 0) {
+                const powersForSave = powers.map(power => ({
+                    characterId: character.id,
+                    powerId: power.powerId,
+                    level: power.level,
+                }));
+                await tx.characterPower.createMany({ data: powersForSave });
+            }
+
+            return tx.character.findUnique({
+                where: { id: character.id },
+                select: {
+                    id: true,
+                    name: true,
+                    description: true,
+                    lifeStory: true,
+                    photo: true,
+                    createdAt: true,
+                    updatedAt: true,
+                    powers: {
+                        select: {
+                            level: true,
+                            power: {
+                                select: {
+                                    name: true,
+                                    description: true,
+                                    createdAt: true,
+                                    updatedAt: true,
+                                },
+                            },
+                        },
+                    },
+                },
+            });
         });
     }
 
-    findAll(animeId: number): Promise<ICharacter[]> {
+    findAll(animeId: number) {
         return this.prisma.character.findMany({
             where: {
                 animeId,
@@ -23,24 +62,78 @@ export class CharactersRepositoryPrisma implements ICharactersRepository {
         });
     }
 
-    findById(id: number): Promise<Partial<ICharacter> | null> {
+    findById(id: number) {
         return this.prisma.character.findUnique({
             where: { id },
             select: {
+                id: true,
                 name: true,
                 description: true,
                 lifeStory: true,
                 photo: true,
                 createdAt: true,
                 updatedAt: true,
+                powers: {
+                    select: {
+                        level: true,
+                        power: {
+                            select: {
+                                name: true,
+                                description: true,
+                                createdAt: true,
+                                updatedAt: true,
+                            },
+                        },
+                    },
+                },
             },
         });
     }
 
     update(id: number, payload: ICharacterPayload) {
-        return this.prisma.character.update({
-            where: { id },
-            data: payload,
+        const { powers, ...characterPayload } = payload;
+
+        return this.prisma.$transaction(async tx => {
+            await tx.character.update({
+                where: { id },
+                data: characterPayload,
+            });
+
+            if (powers?.length > 0) {
+                await tx.characterPower.deleteMany({ where: { characterId: Number(id) } });
+                const powersForSave = powers.map(power => ({
+                    characterId: id,
+                    powerId: power.powerId,
+                    level: power.level,
+                }));
+                await tx.characterPower.createMany({ data: powersForSave });
+            }
+
+            return tx.character.findUnique({
+                where: { id },
+                select: {
+                    id: true,
+                    name: true,
+                    description: true,
+                    lifeStory: true,
+                    photo: true,
+                    createdAt: true,
+                    updatedAt: true,
+                    powers: {
+                        select: {
+                            level: true,
+                            power: {
+                                select: {
+                                    name: true,
+                                    description: true,
+                                    createdAt: true,
+                                    updatedAt: true,
+                                },
+                            },
+                        },
+                    },
+                },
+            });
         });
     }
 

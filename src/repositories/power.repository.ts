@@ -26,6 +26,12 @@ export class PowerRepositoryPrisma implements IPowersRepository {
         });
     }
 
+    findByIds(ids: number[]) {
+        return this.prisma.power.findMany({
+            where: { id: { in: ids } },
+        });
+    }
+
     update(id: number, payload: IPowerPayload) {
         return this.prisma.power.update({
             data: payload,

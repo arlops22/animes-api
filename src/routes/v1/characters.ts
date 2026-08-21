@@ -10,10 +10,13 @@ import { CharacterService } from '../../services/character.service.js';
 import { CharactersRepositoryPrisma } from '../../repositories/character.repository.js';
 import { CharacterController } from '../../controllers/character.controller.js';
 import { validatorMiddleware } from '../../middlewares/validator.middleware.js';
+import { PowerRepositoryPrisma } from '../../repositories/power.repository.js';
+import { IPowersRepository } from '../../interfaces/power.interface.js';
 
 export class CharactersRoutes {
     public router: Router;
     private characterRepository: ICharactersRepository;
+    private powerRepository: IPowersRepository;
     private animeRepository: IAnimesRepository;
     private characterService: CharacterService;
     private characterController: CharacterController;
@@ -21,8 +24,13 @@ export class CharactersRoutes {
     constructor() {
         this.router = Router({ mergeParams: true });
         this.characterRepository = new CharactersRepositoryPrisma(prisma);
+        this.powerRepository = new PowerRepositoryPrisma(prisma);
         this.animeRepository = new AnimesRepositoryPrisma(prisma);
-        this.characterService = new CharacterService(this.characterRepository, this.animeRepository);
+        this.characterService = new CharacterService(
+            this.characterRepository,
+            this.powerRepository,
+            this.animeRepository,
+        );
         this.characterController = new CharacterController(this.characterService);
         this.initRoutes();
     }
