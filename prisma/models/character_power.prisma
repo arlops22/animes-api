@@ -7,4 +7,5 @@ model CharacterPower {
     level       Int
 
     @@unique([characterId, powerId])
+    @@map("characters_powers")
 }

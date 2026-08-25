@@ -9,4 +9,6 @@ model Anime {
   seasons     Season[]
   characters  Character[]
   powersGroup Power[]
+
+  @@map("animes")
 }

@@ -1,6 +1,6 @@
 import { PrismaClient } from '../../generated/prisma/client.js';
 
-import { ICharacter, ICharacterPayload, ICharactersRepository } from '../interfaces/character.interface.js';
+import { ICharacterPayload, ICharactersRepository } from '../interfaces/character.interface.js';
 
 export class CharactersRepositoryPrisma implements ICharactersRepository {
     private prisma: PrismaClient;

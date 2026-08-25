@@ -7,4 +7,6 @@ model Season {
     episodes    Episode[]
     anime       Anime     @relation(fields: [animeId], references: [id], onDelete: Cascade)
     animeId     Int
+
+    @@map("seasons")
 }

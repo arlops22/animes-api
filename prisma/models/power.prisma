@@ -7,4 +7,6 @@ model Power {
     anime       Anime            @relation(fields: [animeId], references: [id], onDelete: Cascade)
     animeId     Int
     charachters CharacterPower[]
+
+    @@map("powers")
 }
