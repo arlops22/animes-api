@@ -9,6 +9,7 @@ import { EpisodeService } from '../../services/episode.service.js';
 import { EpisodesRepositoryPrisma } from '../../repositories/episodes.repository.js';
 import { IEpisodesRepository } from '../../interfaces/episode.interface.js';
 import { validatorMiddleware } from '../../middlewares/validator.middleware.js';
+import { rateLimitMiddleware } from '../../middlewares/rate-limiter.middleware.js';
 
 export class EpisodeRoutes {
     public router: Router;
@@ -36,7 +37,7 @@ export class EpisodeRoutes {
     }
 
     initRoutes() {
-        this.router.post('/', this.validatePayload(), this.episodeController.store.bind(this));
+        this.router.post('/', rateLimitMiddleware, this.validatePayload(), this.episodeController.store.bind(this));
         this.router.delete('/:id', this.episodeController.delete.bind(this));
         this.router.patch('/:id', this.validatePayload(), this.episodeController.update.bind(this));
     }

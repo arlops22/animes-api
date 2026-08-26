@@ -12,6 +12,7 @@ import { CharacterController } from '../../controllers/character.controller.js';
 import { validatorMiddleware } from '../../middlewares/validator.middleware.js';
 import { PowerRepositoryPrisma } from '../../repositories/power.repository.js';
 import { IPowersRepository } from '../../interfaces/power.interface.js';
+import { rateLimitMiddleware } from '../../middlewares/rate-limiter.middleware.js';
 
 export class CharactersRoutes {
     public router: Router;
@@ -42,6 +43,7 @@ export class CharactersRoutes {
     initRoutes() {
         this.router.post(
             '/',
+            rateLimitMiddleware,
             upload.single('photo'),
             this.validatePayload(),
             this.characterController.store.bind(this.characterController),

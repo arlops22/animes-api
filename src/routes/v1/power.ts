@@ -7,6 +7,7 @@ import { PowerService } from '../../services/power.service.js';
 import { PowerController } from '../../controllers/power.controller.js';
 import { IPowersRepository } from '../../interfaces/power.interface.js';
 import { PowerRepositoryPrisma } from '../../repositories/power.repository.js';
+import { rateLimitMiddleware } from '../../middlewares/rate-limiter.middleware.js';
 
 export class PowerRoutes {
     public router: Router;
@@ -26,7 +27,7 @@ export class PowerRoutes {
     }
 
     initRoutes() {
-        this.router.post('/', this.powerController.create.bind(this));
+        this.router.post('/', rateLimitMiddleware, this.powerController.create.bind(this));
         this.router.get('/', this.powerController.list.bind(this));
         this.router.patch('/:id', this.powerController.update.bind(this));
         this.router.delete('/:id', this.powerController.delete.bind(this));

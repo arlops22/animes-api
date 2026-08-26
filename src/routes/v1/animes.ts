@@ -11,6 +11,7 @@ import { SeasonRoutes } from './season.js';
 import { validatorMiddleware } from '../../middlewares/validator.middleware.js';
 import { CharactersRoutes } from './characters.js';
 import { PowerRoutes } from './power.js';
+import { rateLimitMiddleware } from '../../middlewares/rate-limiter.middleware.js';
 
 export class AnimeRoutes {
     public router: Router;
@@ -39,6 +40,7 @@ export class AnimeRoutes {
     initRoutes() {
         this.router.post(
             '/',
+            rateLimitMiddleware,
             upload.single('thumbnail'),
             this.validatePayload(),
             this.animeController.store.bind(this),

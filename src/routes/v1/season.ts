@@ -9,6 +9,7 @@ import { SeasonsRepositoryPrisma } from '../../repositories/seasons.repository.j
 import { IAnimesRepository } from '../../interfaces/anime.interface.js';
 import { AnimesRepositoryPrisma } from '../../repositories/animes.repository.js';
 import { validatorMiddleware } from '../../middlewares/validator.middleware.js';
+import { rateLimitMiddleware } from '../../middlewares/rate-limiter.middleware.js';
 
 export class SeasonRoutes {
     public router: Router;
@@ -35,7 +36,7 @@ export class SeasonRoutes {
     }
 
     initRoutes() {
-        this.router.get('/', this.seasonController.get.bind(this));
+        this.router.get('/', rateLimitMiddleware, this.seasonController.get.bind(this));
         this.router.post('/', this.validatePayload(), this.seasonController.store.bind(this));
         this.router.delete('/:id', this.seasonController.delete.bind(this));
         this.router.patch('/:id', this.validatePayload(), this.seasonController.update.bind(this));
