@@ -1,0 +1,27 @@
+services:
+    app:
+        container_name: anime_wiki_api
+        build:
+            context: ./
+            dockerfile: ./Dockerfile
+        ports:
+            - ${PORT}:8000
+        volumes:
+            - .:/api
+        env_file:
+            - .env
+
+    postgresql:
+        image: postgres
+        container_name: anime_wiki_db
+        environment:
+            POSTGRES_USER: root
+            POSTGRES_PASSWORD: root
+            POSTGRES_DB: anime_wiki
+        ports:
+            - 5432:5432
+        volumes:
+            - postgres_data:/var/lib/postgresql
+
+volumes:
+    postgres_data:
