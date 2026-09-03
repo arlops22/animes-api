@@ -8,6 +8,7 @@ services:
             - ${PORT}:8000
         volumes:
             - .:/api
+            - /api/node_modules
         env_file:
             - .env
 
